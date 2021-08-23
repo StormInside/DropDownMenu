@@ -43,7 +43,8 @@ class Main(QMainWindow):
         self.show_hide_key.activated.connect(self.show_hide)
 
         self.show()
-
+        self.activateWindow()
+        # print(self.isActiveWindow())
         self.setFocus()
         app.focusChanged.connect(self.on_focus_change)
 
@@ -57,6 +58,7 @@ class Main(QMainWindow):
             self.hide()
         else:
             self.show()
+            self.activateWindow()
 
 
 if __name__ == '__main__':
