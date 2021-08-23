@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QSystemTrayIcon, QStyle, QAction, qApp, QMenu
 
 class cssden(QMainWindow):
     def __init__(self):
@@ -12,7 +12,22 @@ class cssden(QMainWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         # </MainWindow Properties>
 
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))
 
+        show_action = QAction("Show", self)
+        quit_action = QAction("Exit", self)
+        hide_action = QAction("Hide", self)
+
+        show_action.triggered.connect(self.show)
+        hide_action.triggered.connect(self.hide)
+        quit_action.triggered.connect(qApp.quit)
+        tray_menu = QMenu()
+        tray_menu.addAction(show_action)
+        tray_menu.addAction(hide_action)
+        tray_menu.addAction(quit_action)
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.show()
 
         self.oldPos = self.pos()
         self.show()
