@@ -1,15 +1,25 @@
 import sys
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QAbstractNativeEventFilter, QAbstractEventDispatcher
 from PyQt5.QtWidgets import QApplication, \
                             QMainWindow, \
                             QSystemTrayIcon, \
                             QStyle, \
                             QAction, \
                             qApp, \
-                            QMenu, \
-                            QShortcut
+                            QMenu
 
+from pyqtkeybind import keybinder
+
+
+class WinEventFilter(QAbstractNativeEventFilter):
+    def __init__(self, keybinder):
+        self.keybinder = keybinder
+        super().__init__()
+
+    def nativeEventFilter(self, eventType, message):
+        ret = self.keybinder.handler(eventType, message)
+        return ret, 0
 
 class Main(QMainWindow):
     def __init__(self, width=1800, height=600, x=60, y=0):
@@ -23,29 +33,31 @@ class Main(QMainWindow):
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))
 
-        show_action = QAction("Show", self)
+        show_hide_action = QAction("Show / Hide", self)
         quit_action = QAction("Exit", self)
-        hide_action = QAction("Hide", self)
 
-        show_action.triggered.connect(self.show)
-        hide_action.triggered.connect(self.hide)
+        show_hide_action.triggered.connect(self.show_hide)
         quit_action.triggered.connect(qApp.quit)
 
         tray_menu = QMenu()
-        tray_menu.addAction(show_action)
-        tray_menu.addAction(hide_action)
+        tray_menu.addAction(show_hide_action)
         tray_menu.addAction(quit_action)
 
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
 
-        self.show_hide_key = QShortcut(QKeySequence('Ctrl+F'), self)
-        self.show_hide_key.activated.connect(self.show_hide)
+        keybinder.init()
+
+        keybinder.register_hotkey(self.winId(), "Shift+Ctrl+A", self.show_hide)
+
+        win_event_filter = WinEventFilter(keybinder)
+        event_dispatcher = QAbstractEventDispatcher.instance()
+        event_dispatcher.installNativeEventFilter(win_event_filter)
 
         self.show()
-        self.activateWindow()
+        # self.activateWindow()
         # print(self.isActiveWindow())
-        self.setFocus()
+        # self.setFocus()
         app.focusChanged.connect(self.on_focus_change)
 
     def on_focus_change(self):
@@ -58,10 +70,11 @@ class Main(QMainWindow):
             self.hide()
         else:
             self.show()
-            self.activateWindow()
+            # self.activateWindow()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main = Main()
+    keybinder.unregister_hotkey(main.winId(), "Shift+Ctrl+A")
     sys.exit(app.exec_())
