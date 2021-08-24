@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, \
                             QMainWindow, \
                             QSystemTrayIcon, \
@@ -47,7 +48,7 @@ class Main(QMainWindow):
 
     def configure_tray(self):
         self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))  # TODO Create icon
+        self.tray_icon.setIcon(QIcon("DropDownLogo_gray.png"))  # TODO Create icon
 
         show_hide_action = QAction("Show / Hide", self)
         settings_action = QAction("Settings", self)
@@ -78,7 +79,7 @@ class Settings(QMainWindow):
 
         self.setWindowTitle("Settings")
         self.setStyleSheet("QMainWindow{background-color: black;border: 1px solid white}")
-        self.setWindowFlags(Qt.WindowMaximizeButtonHint)
+        # self.setWindowFlags(Qt.WindowMaximizeButtonHint)
 
     # def closeEvent(self, event):
 
