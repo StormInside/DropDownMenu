@@ -1,5 +1,4 @@
 import sys
-from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt, QAbstractNativeEventFilter, QAbstractEventDispatcher
 from PyQt5.QtWidgets import QApplication, \
                             QMainWindow, \
@@ -21,8 +20,9 @@ class WinEventFilter(QAbstractNativeEventFilter):
         ret = self.keybinder.handler(eventType, message)
         return ret, 0
 
+
 class Main(QMainWindow):
-    def __init__(self, width=1800, height=600, x=60, y=0):
+    def __init__(self, app: QApplication, width=1800, height=600, x=60, y=0):
         super().__init__()
 
         self.setFixedSize(width, height)
@@ -46,18 +46,6 @@ class Main(QMainWindow):
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
 
-        keybinder.init()
-
-        keybinder.register_hotkey(self.winId(), "Shift+Ctrl+A", self.show_hide)
-
-        win_event_filter = WinEventFilter(keybinder)
-        event_dispatcher = QAbstractEventDispatcher.instance()
-        event_dispatcher.installNativeEventFilter(win_event_filter)
-
-        self.show()
-        # self.activateWindow()
-        # print(self.isActiveWindow())
-        # self.setFocus()
         app.focusChanged.connect(self.on_focus_change)
 
     def on_focus_change(self):
@@ -70,11 +58,32 @@ class Main(QMainWindow):
             self.hide()
         else:
             self.show()
-            # self.activateWindow()
 
+
+def run():
+    app = QApplication(sys.argv)
+    window = Main(app)
+
+    keybinder.init()
+    unregistered = False
+
+    def show_hide():
+        window.show_hide()
+
+    keybinder.register_hotkey(window.winId(), "Shift+Ctrl+A", show_hide)
+
+    win_event_filter = WinEventFilter(keybinder)
+    event_dispatcher = QAbstractEventDispatcher.instance()
+    event_dispatcher.installNativeEventFilter(win_event_filter)
+
+    window.show()
+
+    app.exec_()
+    keybinder.unregister_hotkey(window.winId(), "Shift+Ctrl+A")
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    main = Main()
-    keybinder.unregister_hotkey(main.winId(), "Shift+Ctrl+A")
-    sys.exit(app.exec_())
+
+    sys.exit(run())
+
+
+
