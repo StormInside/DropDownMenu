@@ -1,24 +1,19 @@
-import sys
-from PyQt5.QtCore import Qt, QAbstractNativeEventFilter, QAbstractEventDispatcher
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, \
                             QMainWindow, \
                             QSystemTrayIcon, \
                             QStyle, \
                             QAction, \
                             qApp, \
-                            QMenu
+                            QMenu, \
+                            QDesktopWidget
 
-from pyqtkeybind import keybinder
 
-
-class WinEventFilter(QAbstractNativeEventFilter):
-    def __init__(self, keybinder):
-        self.keybinder = keybinder
-        super().__init__()
-
-    def nativeEventFilter(self, eventType, message):
-        ret = self.keybinder.handler(eventType, message)
-        return ret, 0
+def center(window):
+    qtRectangle = window.frameGeometry()
+    centerPoint = QDesktopWidget().availableGeometry().center()
+    qtRectangle.moveCenter(centerPoint)
+    window.move(qtRectangle.topLeft())
 
 
 class Main(QMainWindow):
@@ -28,19 +23,22 @@ class Main(QMainWindow):
         self.setFixedSize(width, height)
         self.move(x, y)
         self.setStyleSheet("QMainWindow{background-color: darkgray;border: 1px solid black}")
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)  # TODO Create icon
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
 
         self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))
+        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))  # TODO Create icon
 
         show_hide_action = QAction("Show / Hide", self)
+        settings_action = QAction("Settings", self)
         quit_action = QAction("Exit", self)
 
         show_hide_action.triggered.connect(self.show_hide)
+        settings_action.triggered.connect(self.start_settings)
         quit_action.triggered.connect(qApp.quit)
 
         tray_menu = QMenu()
         tray_menu.addAction(show_hide_action)
+        tray_menu.addAction(settings_action)
         tray_menu.addAction(quit_action)
 
         self.tray_icon.setContextMenu(tray_menu)
@@ -59,31 +57,21 @@ class Main(QMainWindow):
         else:
             self.show()
 
-
-def run():
-    app = QApplication(sys.argv)
-    window = Main(app)
-
-    keybinder.init()
-    unregistered = False
-
-    def show_hide():
-        window.show_hide()
-
-    keybinder.register_hotkey(window.winId(), "Shift+Ctrl+A", show_hide)
-
-    win_event_filter = WinEventFilter(keybinder)
-    event_dispatcher = QAbstractEventDispatcher.instance()
-    event_dispatcher.installNativeEventFilter(win_event_filter)
-
-    window.show()
-
-    app.exec_()
-    keybinder.unregister_hotkey(window.winId(), "Shift+Ctrl+A")
-
-if __name__ == '__main__':
-
-    sys.exit(run())
+    def start_settings(self):
+        self.settings = Settings()
+        self.settings.show()
+        self.hide()
 
 
+class Settings(QMainWindow):
+    def __init__(self, width=1280, height=720, x=0.5, y=0):
+        super().__init__()
 
+        self.setFixedSize(width, height)
+        if isinstance(x, float):
+            center(self)
+        else:
+            self.move(x, y)
+
+        self.setWindowTitle("Settings")
+        self.setStyleSheet("QMainWindow{background-color: black;border: 1px solid white}")
