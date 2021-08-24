@@ -11,8 +11,9 @@ def run():
     window = AllWindows.Main(app)
     # window.show()
 
-    keyboard.add_hotkey('ctrl+shift+a', window.show_hide)
+    keyboard.add_hotkey('ctrl+shift+a', window.show_hide, suppress=True)
 
+    app.setQuitOnLastWindowClosed(False)
     app.exec_()
 
 

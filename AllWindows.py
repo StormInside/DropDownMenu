@@ -25,24 +25,7 @@ class Main(QMainWindow):
         self.setStyleSheet("QMainWindow{background-color: darkgray;border: 1px solid black}")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
 
-        self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))  # TODO Create icon
-
-        show_hide_action = QAction("Show / Hide", self)
-        settings_action = QAction("Settings", self)
-        quit_action = QAction("Exit", self)
-
-        show_hide_action.triggered.connect(self.show_hide)
-        settings_action.triggered.connect(self.start_settings)
-        quit_action.triggered.connect(qApp.quit)
-
-        tray_menu = QMenu()
-        tray_menu.addAction(show_hide_action)
-        tray_menu.addAction(settings_action)
-        tray_menu.addAction(quit_action)
-
-        self.tray_icon.setContextMenu(tray_menu)
-        self.tray_icon.show()
+        self.configure_tray()
 
         app.focusChanged.connect(self.on_focus_change)
 
@@ -62,6 +45,26 @@ class Main(QMainWindow):
         self.settings.show()
         self.hide()
 
+    def configure_tray(self):
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))  # TODO Create icon
+
+        show_hide_action = QAction("Show / Hide", self)
+        settings_action = QAction("Settings", self)
+        quit_action = QAction("Exit", self)
+
+        show_hide_action.triggered.connect(self.show_hide)
+        settings_action.triggered.connect(self.start_settings)
+        quit_action.triggered.connect(qApp.quit)
+
+        tray_menu = QMenu()
+        tray_menu.addAction(show_hide_action)
+        tray_menu.addAction(settings_action)
+        tray_menu.addAction(quit_action)
+
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.show()
+
 
 class Settings(QMainWindow):
     def __init__(self, width=1280, height=720, x=0.5, y=0):
@@ -75,3 +78,7 @@ class Settings(QMainWindow):
 
         self.setWindowTitle("Settings")
         self.setStyleSheet("QMainWindow{background-color: black;border: 1px solid white}")
+        self.setWindowFlags(Qt.WindowMaximizeButtonHint)
+
+    # def closeEvent(self, event):
+
