@@ -26,6 +26,8 @@ class Main(QMainWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint)
 
         # self.focusOutEvent()
+        self.setFocusPolicy(Qt.StrongFocus)
+
         app.focusChanged.connect(self.on_focus_change)
 
         self.configure_tray()
@@ -40,6 +42,7 @@ class Main(QMainWindow):
             self.hide()
         else:
             self.show()
+            self.setFocus(True)
 
     def start_settings(self):
         self.settings = Settings()
