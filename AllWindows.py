@@ -25,7 +25,6 @@ class Main(QMainWindow):
         self.setStyleSheet("QMainWindow{background-color: darkgray;border: 1px solid black}")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint)
 
-        # self.focusOutEvent()
         self.setFocusPolicy(Qt.StrongFocus)
 
         app.focusChanged.connect(self.on_focus_change)
@@ -42,7 +41,7 @@ class Main(QMainWindow):
             self.hide()
         else:
             self.show()
-            self.setFocus(True)
+            self.setFocus()
 
     def start_settings(self):
         self.settings = Settings()
@@ -87,7 +86,7 @@ class Settings(QMainWindow):
 
         self.setWindowTitle("Settings")
         self.setStyleSheet("QMainWindow{background-color: black;border: 1px solid white}")
-        # self.setWindowFlags(Qt.WindowMaximizeButtonHint)
+        # self.setWindowFlags()
 
     # def closeEvent(self, event):
 
