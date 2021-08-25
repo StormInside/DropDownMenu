@@ -3,7 +3,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, \
                             QMainWindow, \
                             QSystemTrayIcon, \
-                            QStyle, \
                             QAction, \
                             qApp, \
                             QMenu, \
@@ -24,11 +23,12 @@ class Main(QMainWindow):
         self.setFixedSize(width, height)
         self.move(x, y)
         self.setStyleSheet("QMainWindow{background-color: darkgray;border: 1px solid black}")
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint)
+
+        # self.focusOutEvent()
+        app.focusChanged.connect(self.on_focus_change)
 
         self.configure_tray()
-
-        app.focusChanged.connect(self.on_focus_change)
 
     def on_focus_change(self):
         print(self.hasFocus())
@@ -45,6 +45,10 @@ class Main(QMainWindow):
         self.settings = Settings()
         self.settings.show()
         self.hide()
+
+    def tray_click(self, reason):
+        if reason == QSystemTrayIcon.Trigger:
+            self.show_hide()
 
     def configure_tray(self):
         self.tray_icon = QSystemTrayIcon(self)
@@ -63,6 +67,7 @@ class Main(QMainWindow):
         tray_menu.addAction(settings_action)
         tray_menu.addAction(quit_action)
 
+        self.tray_icon.activated.connect(self.tray_click)
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
 
