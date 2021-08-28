@@ -6,9 +6,10 @@ from PyQt5.QtWidgets import QApplication, \
                             QAction, \
                             qApp, \
                             QMenu, \
-                            QDesktopWidget
+                            QDesktopWidget, QVBoxLayout, QSizeGrip
 
 import settigsUi
+import mainUi
 
 def center(window):
     qtRectangle = window.frameGeometry()
@@ -17,23 +18,39 @@ def center(window):
     window.move(qtRectangle.topLeft())
 
 
-class Main(QMainWindow):
-    def __init__(self, app: QApplication, width=1800, height=600, x=60, y=0):
+class Main(QMainWindow, mainUi.Ui_MainWindow):
+    def __init__(self, app: QApplication,
+                 width=1800,
+                 height=600,
+                 x=60,
+                 y=0,
+                 settings_width=1280,
+                 settings_height=720):
         super().__init__()
+
+        self.settings_width = settings_width
+        self.settings_height = settings_height
 
         self.setFixedSize(width, height)
         self.move(x, y)
         self.setStyleSheet("QMainWindow{background-color: darkgray;border: 1px solid black}")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint)
 
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.NoFocus)
 
         app.focusChanged.connect(self.on_focus_change)
 
         self.configure_tray()
 
+        self.setupUi(self)
+
+        layout = QVBoxLayout()
+        sizegrip = QSizeGrip(self)
+        layout.addWidget(sizegrip, 0, Qt.AlignBottom | Qt.AlignRight)
+        self.setLayout(layout)
+
     def on_focus_change(self):
-        print(self.hasFocus())
+        # print(self.hasFocus())
         if not self.isActiveWindow():
             self.hide()
 
@@ -43,11 +60,14 @@ class Main(QMainWindow):
         else:
             self.show()
             self.setFocus()
+            self.activateWindow()
+
 
     def start_settings(self):
         self.settings = Settings()
-        self.settings.show()
         self.hide()
+        self.settings.show()
+
 
     def tray_click(self, reason):
         if reason == QSystemTrayIcon.Trigger:
