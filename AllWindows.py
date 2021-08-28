@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication, \
                             QMenu, \
                             QDesktopWidget
 
+import settigsUi
 
 def center(window):
     qtRectangle = window.frameGeometry()
@@ -74,9 +75,11 @@ class Main(QMainWindow):
         self.tray_icon.show()
 
 
-class Settings(QMainWindow):
+class Settings(QMainWindow, settigsUi.Ui_Settings):
     def __init__(self, width=1280, height=720, x=0.5, y=0):
         super().__init__()
+
+        self.setupUi(self)
 
         self.setFixedSize(width, height)
         if isinstance(x, float):
