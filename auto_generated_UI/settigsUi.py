@@ -25,7 +25,7 @@ class Ui_Settings(object):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 780, 580))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.hotkey_input = QtWidgets.QLineEdit(self.scrollAreaWidgetContents)
+        self.hotkey_input = QtWidgets.QKeySequenceEdit(self.scrollAreaWidgetContents)
         self.hotkey_input.setGeometry(QtCore.QRect(60, 90, 181, 31))
         self.hotkey_input.setObjectName("hotkey_input")
         self.hotkey_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)

@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QApplication, \
                             QDesktopWidget,\
                             QSizeGrip, QWidget
 
-import settigsUi
+from auto_generated_UI import settigsUi
 
 def center(window):
     qtRectangle = window.frameGeometry()
