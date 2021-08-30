@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtWidgets import QApplication, \
                             QMainWindow, \
                             QVBoxLayout, \
@@ -8,20 +8,21 @@ from auto_generated_UI import mainUi
 
 
 class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
-    def __init__(self, app: QApplication,
-                 width=1800,
-                 height=600,
-                 x=60,
-                 y=0):
+    def __init__(self, app: QApplication):
         super().__init__()
 
-        # self.setFixedSize(width, height)
-        self.move(x, y)
+        settings = QSettings()
+        settings.beginGroup("Screen")
+        self.resize(settings.value("main_frame_geometry").toSize())
+        self.move(settings.value("main_pos").toPoint())
+        settings.endGroup()
+        self.settings = settings
+
         self.setStyleSheet("QMainWindow{background-color: darkgray;border: 1px solid black}")
+
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint)
 
         self.setFocusPolicy(Qt.NoFocus)
-
         app.focusChanged.connect(self.on_focus_change)
 
         self.setupUi(self)

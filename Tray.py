@@ -1,14 +1,9 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, \
-    QMainWindow, \
     QSystemTrayIcon, \
     QAction, \
     qApp, \
-    QMenu, \
-    QDesktopWidget
-
-from auto_generated_UI import settigsUi
+    QMenu
 
 
 class Tray(QSystemTrayIcon):
