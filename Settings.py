@@ -12,7 +12,7 @@ def center(window):
     window.move(qtRectangle.topLeft())
 
 
-def start_settings_constr(app, size, window_to_hide):
+def start_settings_constr(app, window_to_hide):
     def start_settings(self):
         app.settings = Settings()
         app.settings.show()
@@ -25,13 +25,13 @@ class Settings(QMainWindow, settigsUi.Ui_Settings):
         super().__init__()
         self.setupUi(self)
 
-        settings = QSettings()
+        settings = QSettings("MySoft", "DropdownMenu")
         settings.beginGroup("Screen")
-        self.resize(settings.value("sett_frame_geometry").toSize())
+        self.resize(settings.value("sett_frame_geometry"))
         if settings.value("sett_pos") == "Center":
             center(self)
         else:
-            self.move(settings.value("sett_pos").toPoint())
+            self.move(settings.value("sett_pos"))
         settings.endGroup()
         self.settings = settings
 
@@ -45,6 +45,7 @@ class Settings(QMainWindow, settigsUi.Ui_Settings):
         print(new_key_seq.toString())
         mod_key_seq = QKeySequence((new_key_seq.toString()).split(',')[0].strip())
         self.hotkey_input.setKeySequence(mod_key_seq)
+        self.settings.setValue("Hotkey/open_hotkey", new_key_seq)
         # update_settings() #TODO
 
     # TODO disable hotkeys when in settings

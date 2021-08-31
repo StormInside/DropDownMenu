@@ -25,9 +25,10 @@ def run():
 
     app = QApplication(sys.argv)
 
-    settings = QSettings()
-    if not settings.value("Initial/is_initiated"):
-        print("INITIAL")
+    settings = QSettings("MySoft", "DropdownMenu")
+    # settings.clear()
+    if settings.value("Initial/is_initiated") != "true":
+        print("INITIAL START")
         InitialConfig.initiation(app)
 
     app.drop_menu_window = DropMenu.DropMenu(app)

@@ -2,28 +2,28 @@ from PyQt5.QtCore import QSettings, QSize, QPoint
 
 
 def initiation(app):
-    print("INITIATION")
     settings_init()
 
     initial_configure_size(app, 0.9, 0.6, 0.2, 0.5)
-    # settings.setValue("Initial/is_initiated", True)
+
+    settings = QSettings("MySoft", "DropdownMenu")
+    settings.setValue("Initial/is_initiated", True)
 
 
 def settings_init():
-    # settings = QSettings()
 
     settings = QSettings("MySoft", "DropdownMenu")  # TODO org name
-    print(settings.fileName())
-    settings.value("Initial/is_initiated", "False")
-    print(settings.value("Initial/is_initiated"))
-    settings.beginGroup("Screen")
-    settings.value("main_frame_geometry")
-    settings.value("main_pos")
-    settings.value("sett_frame_geometry")
-    settings.value("sett_pos")
-    settings.endGroup()
+    print("Settings in ", settings.fileName())
 
-    settings.value("Hotkey/open_hotkey")
+    settings.setValue("Initial/is_initiated", False)
+
+    # settings.beginGroup("Screen")
+    # settings.value("main_frame_geometry")
+    # settings.value("main_pos")
+    # settings.value("sett_frame_geometry")
+    # settings.value("sett_pos")
+    # settings.endGroup()
+    # settings.value("Hotkey/open_hotkey")
 
     return settings
 
@@ -48,6 +48,9 @@ def initial_configure_size(app, w_mul, h_mul, settings_w_mul, settings_h_mul):
     settings.setValue("sett_frame_geometry", QSize(settings_window_w, settings_window_h))
     settings.setValue("sett_pos", "Center")
     settings.endGroup()
+
+    for key in settings.allKeys():
+        print(f"{key} == {settings.value(key)}")
 
     # size = {"main_window_w": main_window_w,
     #         "main_window_h": main_window_h,

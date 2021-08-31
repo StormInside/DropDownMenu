@@ -11,10 +11,14 @@ class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
     def __init__(self, app: QApplication):
         super().__init__()
 
-        settings = QSettings()
+        self.setupUi(self)
+
+        settings = QSettings("MySoft", "DropdownMenu")
         settings.beginGroup("Screen")
-        self.resize(settings.value("main_frame_geometry").toSize())
-        self.move(settings.value("main_pos").toPoint())
+        size = settings.value("main_frame_geometry")
+        pos = settings.value("main_pos")
+        self.resize(size)
+        self.move(pos)
         settings.endGroup()
         self.settings = settings
 
@@ -24,8 +28,6 @@ class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
 
         self.setFocusPolicy(Qt.NoFocus)
         app.focusChanged.connect(self.on_focus_change)
-
-        self.setupUi(self)
 
         layout = QVBoxLayout()
         sizegrip = QSizeGrip(self)
