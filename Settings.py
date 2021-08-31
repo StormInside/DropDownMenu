@@ -25,7 +25,7 @@ class Settings(QMainWindow, settigsUi.Ui_Settings):
         super().__init__()
         self.setupUi(self)
 
-        settings = QSettings("MySoft", "DropdownMenu")
+        settings = QSettings()
         settings.beginGroup("Screen")
         self.resize(settings.value("sett_frame_geometry"))
         if settings.value("sett_pos") == "Center":

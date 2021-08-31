@@ -13,7 +13,7 @@ class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
 
         self.setupUi(self)
 
-        settings = QSettings("MySoft", "DropdownMenu")
+        settings = QSettings()
         settings.beginGroup("Screen")
         size = settings.value("main_frame_geometry")
         pos = settings.value("main_pos")

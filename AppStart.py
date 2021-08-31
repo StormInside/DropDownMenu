@@ -25,7 +25,11 @@ def run():
 
     app = QApplication(sys.argv)
 
-    settings = QSettings("MySoft", "DropdownMenu")
+    app.setOrganizationName("MySoft")
+    app.setOrganizationDomain("mysoft.com")
+    app.setApplicationName("DropdownMenu")  # TODO org name
+
+    settings = QSettings()
     # settings.clear()
     if settings.value("Initial/is_initiated") != "true":
         print("INITIAL START")

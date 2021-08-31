@@ -2,17 +2,16 @@ from PyQt5.QtCore import QSettings, QSize, QPoint
 
 
 def initiation(app):
-    settings_init()
+    settings = settings_init()
 
-    initial_configure_size(app, 0.9, 0.6, 0.2, 0.5)
+    initial_configure_size(app, settings, 0.9, 0.6, 0.2, 0.5)
 
-    settings = QSettings("MySoft", "DropdownMenu")
     settings.setValue("Initial/is_initiated", True)
 
 
 def settings_init():
 
-    settings = QSettings("MySoft", "DropdownMenu")  # TODO org name
+    settings = QSettings()
     print("Settings in ", settings.fileName())
 
     settings.setValue("Initial/is_initiated", False)
@@ -28,7 +27,7 @@ def settings_init():
     return settings
 
 
-def initial_configure_size(app, w_mul, h_mul, settings_w_mul, settings_h_mul):
+def initial_configure_size(app, settings, w_mul, h_mul, settings_w_mul, settings_h_mul):
     screen = app.primaryScreen()
 
     size = screen.size()
@@ -41,7 +40,6 @@ def initial_configure_size(app, w_mul, h_mul, settings_w_mul, settings_h_mul):
     settings_window_w = size.width() * settings_w_mul
     settings_window_h = size.height() * settings_h_mul
 
-    settings = QSettings("MySoft", "DropdownMenu")
     settings.beginGroup("Screen")
     settings.setValue("main_frame_geometry", QSize(main_window_w, main_window_h))
     settings.setValue("main_pos", QPoint(main_window_off_w, 0))
