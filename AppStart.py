@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication
 from pyqtkeybind import keybinder
 
 import DropMenu
-import Settings
+import SettingsW
 import Tray
 import InitialConfig
 
@@ -40,7 +40,7 @@ def run():
                         app,
                         click_funk=app.drop_menu_window.show_hide,
                         show_hide_funk=app.drop_menu_window.show_hide,
-                        settings_funk=Settings.start_settings_constr(app, app.drop_menu_window)
+                        settings_funk=SettingsW.start_settings_constr(app, app.drop_menu_window)
                         )
     # window.show()
 

@@ -14,13 +14,13 @@ def center(window):
 
 def start_settings_constr(app, window_to_hide):
     def start_settings(self):
-        app.settings = Settings()
+        app.settings = SettingsW()
         app.settings.show()
         window_to_hide.hide()
     return start_settings
 
 
-class Settings(QMainWindow, settigsUi.Ui_Settings):
+class SettingsW(QMainWindow, settigsUi.Ui_Settings):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
