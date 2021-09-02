@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>400</width>
     <height>600</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QScrollArea" name="scrollArea">
+     <widget class="QScrollArea" name="Settings_Scroll_Area">
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
@@ -25,24 +25,14 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>780</width>
-         <height>580</height>
+         <width>386</width>
+         <height>586</height>
         </rect>
        </property>
-       <widget class="QLineEdit" name="hotkey_input">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>90</y>
-          <width>181</width>
-          <height>31</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QLabel" name="hotkey_label">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>30</x>
           <y>50</y>
           <width>81</width>
           <height>31</height>
@@ -55,6 +45,16 @@
         </property>
         <property name="text">
          <string>Hotkey</string>
+        </property>
+       </widget>
+       <widget class="QKeySequenceEdit" name="hotkey_input">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>90</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
         </property>
        </widget>
       </widget>

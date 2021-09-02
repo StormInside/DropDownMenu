@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtCore import QAbstractNativeEventFilter, QAbstractEventDispatcher, Qt, QSettings
+from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication
 
 from pyqtkeybind import keybinder
@@ -32,24 +33,24 @@ def run():
     settings = QSettings()
     settings.clear()
     if settings.value("Initial/is_initiated") != "true":
-        print("INITIAL START")
+        print("INITIALIZING")
         InitialConfig.initiation(app)
 
     app.drop_menu_window = DropMenu.DropMenu(app)
     app.tray = Tray.Tray(
-                        app,
-                        click_funk=app.drop_menu_window.show_hide,
-                        show_hide_funk=app.drop_menu_window.show_hide,
-                        settings_funk=SettingsW.start_settings_constr(app, app.drop_menu_window)
-                        )
+        app,
+        click_funk=app.drop_menu_window.show_hide,
+        show_hide_funk=app.drop_menu_window.show_hide,
+        settings_funk=SettingsW.start_settings_constr(app, app.drop_menu_window)
+    )
     # window.show()
 
     keybinder.init()
 
     app.keybinder = keybinder
 
-    hotkey = settings.value("Hotkey/open_hotkey")
-    print(hotkey)
+    hotkey: QKeySequence = settings.value("Hotkey/open_hotkey")
+    print(f"  Started with open hotkey: {hotkey.toString()}")
 
     keybinder.register_hotkey(app.drop_menu_window.winId(), hotkey, app.drop_menu_window.show_hide)
 

@@ -4,10 +4,10 @@ from PyQt5.QtWidgets import QApplication, \
                             QVBoxLayout, \
                             QSizeGrip
 
-from auto_generated_UI import mainUi
+from auto_generated_UI import UI_main
 
 
-class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
+class DropMenu(QMainWindow, UI_main.Ui_MainWindow):
     def __init__(self, app: QApplication):
         super().__init__()
 

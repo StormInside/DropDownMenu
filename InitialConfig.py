@@ -4,15 +4,16 @@ from PyQt5.QtGui import QKeySequence
 
 def initiation(app):
     settings = QSettings()
-    print("Settings in ", settings.fileName())
+    print(f"  Storing Settings in: {settings.fileName()}")
     settings.setValue("Initial/is_initiated", False)
 
     initial_configure_size(app, settings, 0.9, 0.6, 0.2, 0.5)
 
     settings.setValue("Hotkey/open_hotkey", QKeySequence("Shift+Ctrl+A"))
 
+    print("  Initializing Settings with values:")
     for key in settings.allKeys():
-        print(f"{key} == {settings.value(key)}")
+        print(f"    {key} == {settings.value(key)}")
     settings.setValue("Initial/is_initiated", True)
 
 

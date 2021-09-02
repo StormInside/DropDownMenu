@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\settings_try.ui'
+# Form implementation generated from reading ui file 'settings_try.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,28 +14,28 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
-        Settings.resize(800, 600)
+        Settings.resize(400, 600)
         self.centralwidget = QtWidgets.QWidget(Settings)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
+        self.Settings_Scroll_Area = QtWidgets.QScrollArea(self.centralwidget)
+        self.Settings_Scroll_Area.setWidgetResizable(True)
+        self.Settings_Scroll_Area.setObjectName("Settings_Scroll_Area")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 780, 580))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 386, 586))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.hotkey_input = QtWidgets.QKeySequenceEdit(self.scrollAreaWidgetContents)
-        self.hotkey_input.setGeometry(QtCore.QRect(60, 90, 181, 31))
-        self.hotkey_input.setObjectName("hotkey_input")
         self.hotkey_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.hotkey_label.setGeometry(QtCore.QRect(100, 50, 81, 31))
+        self.hotkey_label.setGeometry(QtCore.QRect(30, 50, 81, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.hotkey_label.setFont(font)
         self.hotkey_label.setObjectName("hotkey_label")
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.verticalLayout.addWidget(self.scrollArea)
+        self.hotkey_input = QtWidgets.QKeySequenceEdit(self.scrollAreaWidgetContents)
+        self.hotkey_input.setGeometry(QtCore.QRect(30, 90, 141, 31))
+        self.hotkey_input.setObjectName("hotkey_input")
+        self.Settings_Scroll_Area.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout.addWidget(self.Settings_Scroll_Area)
         Settings.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(Settings)
