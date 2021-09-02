@@ -30,7 +30,7 @@ def run():
     app.setApplicationName("DropdownMenu")  # TODO org name
 
     settings = QSettings()
-    # settings.clear()
+    settings.clear()
     if settings.value("Initial/is_initiated") != "true":
         print("INITIAL START")
         InitialConfig.initiation(app)
@@ -46,7 +46,12 @@ def run():
 
     keybinder.init()
 
-    keybinder.register_hotkey(app.drop_menu_window.winId(), "Shift+Ctrl+A", app.drop_menu_window.show_hide)
+    app.keybinder = keybinder
+
+    hotkey = settings.value("Hotkey/open_hotkey")
+    print(hotkey)
+
+    keybinder.register_hotkey(app.drop_menu_window.winId(), hotkey, app.drop_menu_window.show_hide)
 
     win_event_filter = WinEventFilter(keybinder)
     event_dispatcher = QAbstractEventDispatcher.instance()
@@ -55,7 +60,7 @@ def run():
     app.setQuitOnLastWindowClosed(False)
     app.exec_()
 
-    keybinder.unregister_hotkey(app.drop_menu_window.winId(), "Shift+Ctrl+A")
+    keybinder.unregister_hotkey(app.drop_menu_window.winId(), hotkey)
 
 
 if __name__ == '__main__':

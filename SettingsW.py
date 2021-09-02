@@ -14,16 +14,18 @@ def center(window):
 
 def start_settings_constr(app, window_to_hide):
     def start_settings(self):
-        app.settings = SettingsW()
+        app.settings = SettingsW(app)
         app.settings.show()
         window_to_hide.hide()
     return start_settings
 
 
 class SettingsW(QMainWindow, settigsUi.Ui_Settings):
-    def __init__(self):
+    def __init__(self, app):
         super().__init__()
         self.setupUi(self)
+
+        self.app = app
 
         settings = QSettings()
         settings.beginGroup("Screen")
@@ -41,11 +43,19 @@ class SettingsW(QMainWindow, settigsUi.Ui_Settings):
         self.hotkey_input.keySequenceChanged.connect(self._change_key_sequence)
         # self.setWindowFlags()
 
+    def register_new_hotkey(self, old_hotkey, new_hotkey):
+        self.app.keybinder.unregister_hotkey(self.app.drop_menu_window.winId(), old_hotkey)
+        self.app.keybinder.register_hotkey(self.app.drop_menu_window.winId(),
+                                           new_hotkey,
+                                           self.app.drop_menu_window.show_hide)
+
     def _change_key_sequence(self, new_key_seq: QKeySequence):
         print(new_key_seq.toString())
         mod_key_seq = QKeySequence((new_key_seq.toString()).split(',')[0].strip())
         self.hotkey_input.setKeySequence(mod_key_seq)
-        self.settings.setValue("Hotkey/open_hotkey", new_key_seq)
+        old_key = self.settings.value("Hotkey/open_hotkey")
+        self.register_new_hotkey(old_key, mod_key_seq)
+        self.settings.setValue("Hotkey/open_hotkey", mod_key_seq)
         # update_settings() #TODO
 
     # TODO disable hotkeys when in settings

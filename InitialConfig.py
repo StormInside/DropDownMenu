@@ -1,30 +1,19 @@
 from PyQt5.QtCore import QSettings, QSize, QPoint
+from PyQt5.QtGui import QKeySequence
 
 
 def initiation(app):
-    settings = settings_init()
+    settings = QSettings()
+    print("Settings in ", settings.fileName())
+    settings.setValue("Initial/is_initiated", False)
 
     initial_configure_size(app, settings, 0.9, 0.6, 0.2, 0.5)
 
+    settings.setValue("Hotkey/open_hotkey", QKeySequence("Shift+Ctrl+A"))
+
+    for key in settings.allKeys():
+        print(f"{key} == {settings.value(key)}")
     settings.setValue("Initial/is_initiated", True)
-
-
-def settings_init():
-
-    settings = QSettings()
-    print("Settings in ", settings.fileName())
-
-    settings.setValue("Initial/is_initiated", False)
-
-    # settings.beginGroup("Screen")
-    # settings.value("main_frame_geometry")
-    # settings.value("main_pos")
-    # settings.value("sett_frame_geometry")
-    # settings.value("sett_pos")
-    # settings.endGroup()
-    # settings.value("Hotkey/open_hotkey")
-
-    return settings
 
 
 def initial_configure_size(app, settings, w_mul, h_mul, settings_w_mul, settings_h_mul):
@@ -50,10 +39,4 @@ def initial_configure_size(app, settings, w_mul, h_mul, settings_w_mul, settings
     for key in settings.allKeys():
         print(f"{key} == {settings.value(key)}")
 
-    # size = {"main_window_w": main_window_w,
-    #         "main_window_h": main_window_h,
-    #         "main_window_off_w": main_window_off_w,
-    #         "settings_window_w": settings_window_w,
-    #         "settings_window_h": settings_window_h}
-    #
-    # return size
+
