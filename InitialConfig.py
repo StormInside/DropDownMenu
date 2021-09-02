@@ -35,8 +35,3 @@ def initial_configure_size(app, settings, w_mul, h_mul, settings_w_mul, settings
     settings.setValue("sett_frame_geometry", QSize(settings_window_w, settings_window_h))
     settings.setValue("sett_pos", "Center")
     settings.endGroup()
-
-    for key in settings.allKeys():
-        print(f"{key} == {settings.value(key)}")
-
-
