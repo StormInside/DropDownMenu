@@ -11,6 +11,7 @@ class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
     def __init__(self, app: QApplication):
         super().__init__()
 
+        self.app = app
         self.setupUi(self)
 
         settings = QSettings()
@@ -27,7 +28,7 @@ class DropMenu(QMainWindow, mainUi.Ui_MainWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint)
 
         self.setFocusPolicy(Qt.NoFocus)
-        app.focusChanged.connect(self.on_focus_change)
+        self.app.focusChanged.connect(self.on_focus_change)
 
         layout = QVBoxLayout()
         sizegrip = QSizeGrip(self)
