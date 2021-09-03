@@ -50,7 +50,10 @@ def run():
     app.keybinder = keybinder
 
     hotkey: QKeySequence = settings.value("Hotkey/open_hotkey")
-    print(f"  Started with open hotkey: {hotkey.toString()}")
+    if isinstance(hotkey, str):
+        print(f"  Started with open hotkey: {hotkey}")
+    else:
+        print(f"  Started with open hotkey: {hotkey.toString()}")
 
     keybinder.register_hotkey(app.drop_menu_window.winId(), hotkey, app.drop_menu_window.show_hide)
 
@@ -61,7 +64,7 @@ def run():
     app.setQuitOnLastWindowClosed(False)
     app.exec_()
 
-    keybinder.unregister_hotkey(app.drop_menu_window.winId(), hotkey)
+    keybinder.unregister_hotkey(app.drop_menu_window.winId(), settings.value("Hotkey/open_hotkey"))
 
 
 if __name__ == '__main__':

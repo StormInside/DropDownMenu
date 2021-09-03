@@ -50,16 +50,13 @@ class SettingsW(QMainWindow, UI_settings.Ui_Settings):
 
     def on_focus_change(self, old_widget: QWidget, new_widget: QWidget):
 
-        # old_widget_name = old_widget.objectName() if not (old_widget is None) else "None"
-        # new_widget_name = new_widget.objectName() if not (new_widget is None) else "None"
-        # print(f"old_widget:{old_widget_name} - new_widget: {new_widget_name}")
-        # print(f"wind_active_on_prev_check:{self.wind_active_on_prev_check} - isActiveWindow: {self.isActiveWindow()}")
-        if self.wind_active_on_prev_check and (not self.isActiveWindow()):
-            self.enable_open_hotkey() #TODO fix slow closing of window, caused by long execution time of this line
-        elif (not self.wind_active_on_prev_check) and self.isActiveWindow():
+        old_widget_name = old_widget.objectName() if not (old_widget is None) else "None"
+        new_widget_name = new_widget.objectName() if not (new_widget is None) else "None"
+        print(f"old_widget:{old_widget_name} - new_widget: {new_widget_name}")
+        if new_widget_name == "hotkey_input":
             self.disable_open_hotkey()
-        self.wind_active_on_prev_check = self.isActiveWindow()
-
+        elif old_widget_name == "hotkey_input":
+            self.enable_open_hotkey()
 
     def disable_open_hotkey(self):
         old_hotkey = self.settings.value("Hotkey/open_hotkey")
@@ -74,5 +71,9 @@ class SettingsW(QMainWindow, UI_settings.Ui_Settings):
     def _change_key_sequence(self, key_seq: QKeySequence):
         print(f"New open hotkey:{key_seq.toString()}")
         mod_key_seq = QKeySequence((key_seq.toString()).split(',')[0].strip())
-        self.hotkey_input.setKeySequence(mod_key_seq)
-        self.settings.setValue("Hotkey/open_hotkey", mod_key_seq)
+        if mod_key_seq != "":
+            self.hotkey_input.setKeySequence(mod_key_seq)
+            self.settings.setValue("Hotkey/open_hotkey", mod_key_seq)
+            self.setFocus()
+            self.activateWindow()
+
